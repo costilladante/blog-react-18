@@ -1,0 +1,53 @@
+:root {
+  --primary-color: #00ffff;
+  --secondary-color: #a742f5;
+  --background-color: #222222;
+  --foreground-color: #333333;
+}
+
+#root {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: 20vh auto; /* 1st row for title, 2nd row for posts */
+  grid-gap: 20px;
+  color: var(--primary-color);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--background-color);
+}
+
+.Main {
+  grid-column: span 12;
+}
+
+#Title {
+  grid-column: 2 / span 10; /* Start at 2nd column and span 10 columns */
+  grid-row: 1; /* place the title in the 1st row */
+  justify-self: center; /* center horizontally */
+  align-self: center; /* center vertically */
+}
+
+.PostsContainer {
+  grid-column-start: 2;
+  grid-column-end: 12;
+  grid-row: 2; /* place the PostsContainer in the 2nd row */
+}
+
+.Post {
+  background-color: var(--foreground-color);
+  grid-column: 2 / span 10; /* Start at 2nd column and span 10 columns */
+  /* grid-column: span 10; */
+  max-height: 400px;
+
+  border: 1px solid var(--secondary-color);
+
+  > label {
+    color: var(--primary-color);
+  }
+  > p {
+    color: white;
+  }
+}
