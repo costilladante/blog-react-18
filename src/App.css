@@ -36,6 +36,15 @@ body {
   grid-row: 2; /* place the PostsContainer in the 2nd row */
 }
 
+#InputSearch {
+  grid-column: 2 / span 10; /* Start at 2nd column and span 10 columns */
+  grid-row: 1; /* place the title in the 1st row */
+  justify-self: center; /* center horizontally */
+  align-self: center; /* center vertically */
+  justify-self: left;
+  align-self: end;
+}
+
 .Post {
   background-color: var(--foreground-color);
   grid-column: 2 / span 10; /* Start at 2nd column and span 10 columns */

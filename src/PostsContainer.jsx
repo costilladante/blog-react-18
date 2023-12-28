@@ -12,6 +12,7 @@ const PostsContainer = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const fetchPost = useCallback(async () => {
     setIsLoading(true);
@@ -29,9 +30,16 @@ const PostsContainer = () => {
     }
   }, [postCount]);
 
-  const onLoadMore = async () => {
+  const filteredPosts = posts.filter((post) => {
+    return post.title.toLowerCase().includes(searchQuery.toLowerCase());
+  });
+
+  const onSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const onLoadMore = () => {
     setPostCount((previousValue) => previousValue + postCountStep);
-    await fetchPost();
   };
 
   const onCloseModal = () => {
@@ -41,18 +49,25 @@ const PostsContainer = () => {
   useEffect(() => {
     // load posts
     fetchPost();
-  }, []);
+  }, [fetchPost]);
 
   return (
     <>
+      <input
+        id='InputSearch'
+        type='text'
+        placeholder='Search posts'
+        value={searchQuery}
+        onChange={onSearchChange}
+      />
       {posts.length > 0 && (
         <div className='PostsContainer'>
-          {posts.map((post, i) => (
-            <Post key={post.id} title={post.title} body={post.body}></Post>
+          {filteredPosts.map((post) => (
+            <Post key={post.id} title={post.title} body={post.body} />
           ))}
         </div>
       )}
-      ){isLoading && <div className='Loader'>Loading...</div>}
+      {isLoading && <div className='Loader'>Loading...</div>}
       {error && showModal && (
         <Modal onClose={onCloseModal}>
           <p>{error}</p>

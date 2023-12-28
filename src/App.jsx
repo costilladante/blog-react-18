@@ -1,4 +1,4 @@
-import PostsContainer from './PostContainer';
+import PostsContainer from './PostsContainer';
 
 const Main = () => {
   return (
