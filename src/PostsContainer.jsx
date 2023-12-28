@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import Post from './Post';
 import Modal from './Modal';
 import { getPosts } from './api';
@@ -30,9 +30,11 @@ const PostsContainer = () => {
     }
   }, [postCount]);
 
-  const filteredPosts = posts.filter((post) => {
-    return post.title.toLowerCase().includes(searchQuery.toLowerCase());
-  });
+  const filteredPosts = useMemo(() => {
+    return posts.filter((post) => {
+      return post.title.toLowerCase().includes(searchQuery.toLowerCase());
+    });
+  }, [posts, searchQuery]);
 
   const onSearchChange = (event) => {
     setSearchQuery(event.target.value);
@@ -73,7 +75,7 @@ const PostsContainer = () => {
           <p>{error}</p>
         </Modal>
       )}
-      <button id='ButtonLoadMore' onClick={onLoadMore}>
+      <button id='ButtonLoadMore' disabled={isLoading} onClick={onLoadMore}>
         Load More
       </button>
     </>

@@ -123,6 +123,11 @@ body {
   width: 160px;
 }
 
+#ButtonLoadMore:disabled {
+  background-color: gray;
+  cursor: not-allowed;
+}
+
 #ButtonLoadMore:hover {
   background-color: var(--primary-color);
 }
