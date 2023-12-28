@@ -29,8 +29,9 @@ const PostsContainer = () => {
     }
   }, [postCount]);
 
-  const onLoadMore = () => {
+  const onLoadMore = async () => {
     setPostCount((previousValue) => previousValue + postCountStep);
+    await fetchPost();
   };
 
   const onCloseModal = () => {
@@ -40,20 +41,18 @@ const PostsContainer = () => {
   useEffect(() => {
     // load posts
     fetchPost();
-  }, [postCount]);
-
-  const renderPosts = () => {
-    const postList = posts.map((post, i) => (
-      <Post key={post.id} title={post.title} body={post.body}></Post>
-    ));
-
-    return <div className='PostsContainer'>{postList}</div>;
-  };
+  }, []);
 
   return (
     <>
-      {renderPosts()}
-      {isLoading && <div className='Loader'>Loading...</div>}
+      {posts.length > 0 && (
+        <div className='PostsContainer'>
+          {posts.map((post, i) => (
+            <Post key={post.id} title={post.title} body={post.body}></Post>
+          ))}
+        </div>
+      )}
+      ){isLoading && <div className='Loader'>Loading...</div>}
       {error && showModal && (
         <Modal onClose={onCloseModal}>
           <p>{error}</p>
