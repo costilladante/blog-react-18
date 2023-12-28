@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
-
+import { useEffect, useState, useCallback } from 'react';
 import Post from './Post';
 import Modal from './Modal';
+import { getPosts } from './api';
 
-const API_BASE_URL = 'https://jsonplaceholder.typicode.com/posts';
 const postCountStep = 5;
+const FETCH_POSTS_ERROR = 'Failed to load posts.';
 
 const PostsContainer = () => {
   const [posts, setPosts] = useState([]);
@@ -13,27 +13,21 @@ const PostsContainer = () => {
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
-  const fetchPost = async () => {
+  const fetchPost = useCallback(async () => {
     setIsLoading(true);
     setError(null);
 
     try {
-      // GET /posts?_page=7
-      // GET /posts?_page=7&_limit=20
-      // fetch(`https://jsonplaceholder.typicode.com/posts?_page=${pageNumber}&_limit=${maxPosts}`) // for pagination
-      const response = await fetch(
-        `${API_BASE_URL}?_start=0&_limit=${postCount}`
-      ); // for infinite scroll
-      const data = await response.json();
+      const data = await getPosts(postCount);
       setPosts(data);
     } catch (reason) {
-      setError('Failed to load posts.');
+      setError(FETCH_POSTS_ERROR);
       setShowModal(true);
       console.log(reason);
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [postCount]);
 
   const onLoadMore = () => {
     setPostCount((previousValue) => previousValue + postCountStep);
